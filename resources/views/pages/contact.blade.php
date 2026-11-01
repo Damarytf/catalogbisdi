@@ -1,89 +1,86 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-gray-50 min-h-[calc(100vh-16rem)] py-16">
+<div class="py-14 sm:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center mb-16">
-            <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-4">Hubungi Kami</h1>
-            <p class="text-xl text-gray-500 max-w-2xl mx-auto">
-                Kami siap membantu Anda. Jangan ragu untuk menghubungi tim kami melalui kontak di bawah ini.
+        <!-- Header -->
+        <div class="max-w-xl mb-12">
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#F97316] block mb-2">Informasi & Kontak</span>
+            <h1 class="font-heading text-3xl sm:text-4xl font-bold text-[#F5EDE6] tracking-tight mb-3">
+                Layanan Kontak Resmi
+            </h1>
+            <p class="text-xs text-[#A39A92] leading-relaxed">
+                Pertanyaan seputar produk atau kebutuhan kolaborasi dapat Anda tanyakan langsung kepada perwakilan pengelola katalog.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            <!-- Contact Info Cards -->
-            <div class="space-y-6">
-                <!-- Address -->
-                <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm flex gap-6 items-start group hover:border-primary-200 hover:shadow-md transition-all">
-                    <div class="w-14 h-14 bg-primary-50 rounded-xl flex items-center justify-center flex-shrink-0 text-primary-600 group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            <!-- Kolom Info Kontak (6 Cols) -->
+            <div class="lg:col-span-6 space-y-4">
+                
+                <!-- Alamat -->
+                <div class="bg-[#17120F] rounded-[16px] border border-white/[0.07] p-6">
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-[#A39A92] mb-2 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
                         </svg>
+                        Lokasi Kampus
                     </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Alamat Kami</h3>
-                        <p class="text-gray-600 leading-relaxed">{{ $settings['store_address'] ?? 'Alamat Belum Diatur' }}</p>
-                    </div>
+                    <p class="text-xs text-[#F5EDE6] leading-relaxed">
+                        {{ $settings['store_address'] ?? 'Program Studi Bisnis Digital, Fakultas Ilmu Komputer, UPN Veteran Jawa Timur, Jl. Rungkut Madya No.1, Surabaya' }}
+                    </p>
                 </div>
 
                 <!-- WhatsApp -->
-                <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm flex gap-6 items-start group hover:border-[#25D366]/20 hover:shadow-md transition-all">
-                    <div class="w-14 h-14 bg-[#25D366]/10 rounded-xl flex items-center justify-center flex-shrink-0 text-[#25D366] group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                <div class="bg-[#17120F] rounded-[16px] border border-white/[0.07] p-6">
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-[#A39A92] mb-2 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                         </svg>
+                        WhatsApp Resmi
                     </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">WhatsApp</h3>
-                        <p class="text-gray-600 mb-4">{{ $settings['whatsapp_number'] ?? '-' }}</p>
-                        @if(isset($settings['whatsapp_number']))
-                        <a href="https://wa.me/{{ $settings['whatsapp_number'] }}" target="_blank" class="inline-flex items-center text-[#25D366] font-semibold hover:text-[#128C7E]">
-                            Chat Sekarang &rarr;
-                        </a>
-                        @endif
+                    <p class="text-sm font-bold text-[#F5EDE6] mb-3 tabular-nums">{{ $settings['whatsapp_number'] ?? '0812-3456-7890' }}</p>
+                    @if(isset($settings['whatsapp_number']))
+                    <a href="https://wa.me/{{ $settings['whatsapp_number'] }}" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-[8px] bg-[#F97316] text-white hover:bg-[#EA580C] transition-colors">
+                        Kirim Pesan WhatsApp &rarr;
+                    </a>
+                    @endif
+                </div>
+
+                <!-- Email & Operasional -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-[#17120F] rounded-[16px] border border-white/[0.07] p-5">
+                        <div class="text-[10px] font-bold uppercase tracking-wider text-[#A39A92] mb-1">Email</div>
+                        <p class="text-xs text-[#F5EDE6] font-medium break-all">{{ $settings['store_email'] ?? 'bisnisdigital@upnjatim.ac.id' }}</p>
+                    </div>
+
+                    <div class="bg-[#17120F] rounded-[16px] border border-white/[0.07] p-5">
+                        <div class="text-[10px] font-bold uppercase tracking-wider text-[#A39A92] mb-1">Waktu Respons</div>
+                        <p class="text-xs text-[#F5EDE6] font-medium">{{ $settings['store_hours'] ?? 'Senin - Jumat: 08.00 - 16.00 WIB' }}</p>
                     </div>
                 </div>
 
-                <!-- Email & Hours -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm group hover:border-primary-200 transition-all">
-                        <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 transition-transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                            </svg>
-                        </div>
-                        <h3 class="font-bold text-gray-900 mb-1">Email</h3>
-                        <p class="text-gray-600 break-all">{{ $settings['store_email'] ?? '-' }}</p>
-                    </div>
-
-                    <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm group hover:border-primary-200 transition-all">
-                        <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 transition-transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <h3 class="font-bold text-gray-900 mb-1">Jam Operasional</h3>
-                        <p class="text-gray-600">{{ $settings['store_hours'] ?? '-' }}</p>
-                    </div>
-                </div>
             </div>
 
-            <!-- Maps/Image Area -->
-            <div class="h-full min-h-[400px] bg-gray-200 rounded-3xl overflow-hidden shadow-inner relative border border-gray-100">
-                @if(isset($settings['maps_embed_url']) && $settings['maps_embed_url'])
-                    <iframe src="{{ $settings['maps_embed_url'] }}" width="100%" height="100%" style="border:0; position:absolute; top:0; left:0; width:100%; height:100%;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                @else
-                    <div class="absolute inset-0 flex items-center justify-center flex-col text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mb-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                        </svg>
-                        <p class="font-medium">Peta Belum Ditambahkan</p>
-                    </div>
-                @endif
+            <!-- Kolom Peta (6 Cols) -->
+            <div class="lg:col-span-6">
+                <div class="bg-[#17120F] rounded-[20px] border border-white/[0.07] p-2 min-h-[360px]">
+                    @if(isset($settings['maps_embed_url']) && $settings['maps_embed_url'])
+                        <iframe src="{{ $settings['maps_embed_url'] }}" width="100%" height="360" class="rounded-[14px] w-full h-[360px]" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    @else
+                        <div class="w-full h-[360px] bg-[#201A16] rounded-[14px] flex flex-col items-center justify-center p-6 text-center text-[#A39A92]">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mb-2 text-[#F97316]">
+                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span class="text-xs font-bold text-[#F5EDE6] block mb-0.5">Lokasi Kampus UPNVJT</span>
+                            <span class="text-[11px] max-w-xs">Fakultas Ilmu Komputer, UPN "Veteran" Jawa Timur, Surabaya.</span>
+                        </div>
+                    @endif
+                </div>
             </div>
 
         </div>

@@ -1,128 +1,123 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-gray-50 pt-8 pb-16 border-b border-gray-100">
+<div class="py-12 sm:py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         <!-- Breadcrumbs -->
-        <nav class="flex text-sm text-gray-500 mb-8" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                <li class="inline-flex items-center">
-                    <a href="{{ route('catalog.index') }}" class="hover:text-primary-600 font-medium">Katalog</a>
+        <nav class="flex text-xs text-[#A39A92] mb-8" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-2">
+                <li>
+                    <a href="{{ route('catalog.index') }}" class="hover:text-[#F97316] transition-colors">Katalog</a>
                 </li>
                 @if($product->category)
-                <li>
-                    <div class="flex items-center">
-                        <svg class="w-4 h-4 text-gray-400 mx-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        <a href="{{ route('catalog.index', ['category' => $product->category->slug]) }}" class="hover:text-primary-600 font-medium">{{ $product->category->name }}</a>
-                    </div>
+                <li class="flex items-center gap-2">
+                    <span class="text-white/20">/</span>
+                    <a href="{{ route('catalog.index', ['category' => $product->category->slug]) }}" class="hover:text-[#F97316] transition-colors">
+                        {{ $product->category->name }}
+                    </a>
                 </li>
                 @endif
-                <li aria-current="page">
-                    <div class="flex items-center">
-                        <svg class="w-4 h-4 text-gray-400 mx-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="text-gray-900 font-medium line-clamp-1">{{ $product->name }}</span>
-                    </div>
+                <li class="flex items-center gap-2">
+                    <span class="text-white/20">/</span>
+                    <span class="text-[#F5EDE6] font-medium line-clamp-1">{{ $product->name }}</span>
                 </li>
             </ol>
         </nav>
 
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="flex flex-col lg:flex-row">
-                <!-- Product Image -->
-                <div class="lg:w-1/2 bg-gray-50 p-8 flex items-center justify-center border-r border-gray-100">
-                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full max-w-md h-auto object-cover rounded-xl shadow-lg mix-blend-multiply">
+        <!-- Main Product Card (Solid Surface #17120F, Rounded 20px) -->
+        <div class="bg-[#17120F] rounded-[20px] border border-white/[0.08] p-8 sm:p-12 mb-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                
+                <!-- Gambar Produk (5 Cols) -->
+                <div class="lg:col-span-5">
+                    <div class="relative aspect-square rounded-[16px] overflow-hidden bg-[#201A16] border border-white/[0.06]">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                        @if($product->isOnSale())
+                            <div class="absolute top-3 left-3">
+                                <span class="glass-pill px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white bg-black/40">
+                                    <span class="text-[#F97316] mr-1">•</span> Diskon
+                                </span>
+                            </div>
+                        @endif
+                    </div>
                 </div>
                 
-                <!-- Product Info -->
-                <div class="lg:w-1/2 p-8 lg:p-12" x-data="{ qty: 1 }">
-                    <div class="mb-2 flex items-center justify-between">
-                        <span class="text-sm font-semibold text-primary-600 tracking-wider uppercase">{{ $product->category->name ?? 'Uncategorized' }}</span>
-                        
-                        <div class="flex items-center gap-2">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-{{ $product->stock_status_color }}-100 text-{{ $product->stock_status_color }}-800">
-                                {{ $product->stock_status }} ({{ $product->stock }})
+                <!-- Keterangan Produk (7 Cols) -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-white/[0.06]">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-[#A39A92]">
+                            {{ $product->category->name ?? 'Produk Digital' }}
+                        </span>
+
+                        @if($product->isAvailable())
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium text-emerald-300 bg-emerald-950/60 border border-emerald-500/20">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                Tersedia ({{ $product->stock }} item)
                             </span>
-                        </div>
-                    </div>
-                    
-                    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">{{ $product->name }}</h1>
-                    
-                    <div class="mb-6">
-                        @if($product->isOnSale())
-                            <div class="flex items-center gap-3">
-                                <span class="text-3xl font-black text-red-600">{{ $product->formatted_effective_price }}</span>
-                                <span class="text-xl text-gray-400 line-through font-medium">{{ $product->formatted_price }}</span>
-                                <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded">Promo</span>
-                            </div>
                         @else
-                            <span class="text-3xl font-black text-gray-900">{{ $product->formatted_price }}</span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-[#A39A92] bg-white/[0.04] border border-white/10">
+                                Stok Habis
+                            </span>
                         @endif
-                        <div class="text-sm text-gray-500 mt-1">per {{ $product->unit }}</div>
                     </div>
                     
-                    <p class="text-gray-600 mb-8 leading-relaxed text-lg">
-                        {{ $product->description }}
-                    </p>
+                    <h1 class="font-heading text-3xl sm:text-4xl font-bold text-[#F5EDE6] leading-tight">
+                        {{ $product->name }}
+                    </h1>
                     
+                    <!-- Harga Tabular -->
+                    <div class="py-2 flex items-baseline gap-4 tabular-nums">
+                        @if($product->isOnSale())
+                            <span class="text-3xl sm:text-4xl font-bold text-[#F97316]">{{ $product->formatted_effective_price }}</span>
+                            <span class="text-base text-[#A39A92] line-through">{{ $product->formatted_price }}</span>
+                        @else
+                            <span class="text-3xl sm:text-4xl font-bold text-[#F5EDE6]">{{ $product->formatted_price }}</span>
+                        @endif
+                    </div>
+
+                    <!-- Deskripsi Detail -->
+                    <div class="text-sm text-[#A39A92] leading-relaxed space-y-3 font-light pt-2">
+                        {!! nl2br(e($product->description)) !!}
+                    </div>
+
+                    <!-- Tombol Aksi -->
                     @if($product->isAvailable())
-                        <div class="border-t border-gray-100 pt-8 mt-8">
-                            <div class="flex flex-col sm:flex-row gap-4 items-end">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah</label>
-                                    <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden h-12 w-32">
-                                        <button @click="qty > 1 ? qty-- : null" class="px-3 bg-gray-50 hover:bg-gray-100 h-full text-gray-600 font-bold transition-colors">-</button>
-                                        <input type="number" x-model="qty" min="1" max="{{ $product->stock }}" class="w-full text-center h-full border-0 focus:ring-0 text-lg font-medium p-0" readonly>
-                                        <button @click="qty < {{ $product->stock }} ? qty++ : null" class="px-3 bg-gray-50 hover:bg-gray-100 h-full text-gray-600 font-bold transition-colors">+</button>
-                                    </div>
-                                </div>
-                                
-                                <button 
-                                    @click="$store.cart.add({{ json_encode(['id' => $product->id, 'name' => $product->name, 'price' => (float)$product->price, 'sale_price' => (float)$product->sale_price, 'image_url' => $product->image_url]) }}, qty)"
-                                    class="flex-1 bg-primary-600 text-white h-12 px-8 rounded-lg font-bold text-lg hover:bg-primary-700 transition-colors shadow-md shadow-primary-600/30 flex items-center justify-center gap-2"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                                    </svg>
-                                    Tambah ke Keranjang
-                                </button>
-                            </div>
-                        </div>
-                    @else
-                        <div class="border-t border-gray-100 pt-8 mt-8">
-                            <div class="bg-gray-100 text-gray-500 text-center py-4 rounded-lg font-bold">
-                                Maaf, stok produk saat ini sedang habis.
-                            </div>
+                        <div class="pt-6 border-t border-white/[0.06] flex flex-wrap items-center gap-4">
+                            <button 
+                                @click.prevent="$store.cart.add({{ json_encode(['id' => $product->id, 'name' => $product->name, 'price' => (float)$product->price, 'sale_price' => (float)$product->sale_price, 'image_url' => $product->image_url]) }})"
+                                class="px-6 py-3.5 rounded-[12px] bg-[#F97316] hover:bg-[#EA580C] text-white font-bold text-xs uppercase tracking-wider transition-colors duration-150 flex items-center gap-2"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                Tambah ke Keranjang
+                            </button>
+
+                            <a href="{{ route('cart.index') }}" class="px-6 py-3.5 rounded-[12px] bg-white/[0.04] hover:bg-white/[0.08] text-[#F5EDE6] border border-white/10 text-xs font-semibold uppercase tracking-wider transition-colors duration-150">
+                                Buka Keranjang
+                            </a>
                         </div>
                     @endif
-                </div>
-            </div>
-            
-            @if($product->long_description)
-            <div class="border-t border-gray-100">
-                <div class="p-8 lg:p-12">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Deskripsi Lengkap</h2>
-                    <div class="prose prose-primary max-w-none prose-lg text-gray-600">
-                        {!! $product->long_description !!}
-                    </div>
-                </div>
-            </div>
-            @endif
-        </div>
-    </div>
-</div>
 
-@if($relatedProducts->count() > 0)
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <h2 class="text-2xl font-bold text-gray-900 mb-8">Produk Terkait</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        @foreach($relatedProducts as $related)
-            <x-product-card :product="$related" />
-        @endforeach
+                </div>
+            </div>
+        </div>
+
+        <!-- Produk Terkait -->
+        @if($relatedProducts->count() > 0)
+            <div class="mt-20 pt-10 border-t border-white/[0.06]">
+                <h2 class="font-heading text-2xl font-bold text-[#F5EDE6] mb-6">Produk Terkait Lainnya</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    @foreach($relatedProducts as $related)
+                        <x-product-card :product="$related" />
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
     </div>
 </div>
-@endif
 @endsection

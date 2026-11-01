@@ -1,102 +1,248 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="relative bg-linear-to-br from-primary-950 via-primary-900 to-indigo-950 py-20 sm:py-28 overflow-hidden border-b border-white/5">
-    <div class="absolute inset-0 opacity-30 mix-blend-overlay bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"></div>
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute -top-40 -right-40 w-96 h-96 bg-primary-500/30 rounded-full blur-[128px] animate-pulse"></div>
-        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-500/20 rounded-full blur-[128px]"></div>
-    </div>
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <h1 class="text-4xl sm:text-6xl font-black text-white tracking-tight mb-6 bg-clip-text bg-linear-to-r from-white via-slate-200 to-primary-200">
-            Katalog Produk Digital
-        </h1>
-        <p class="text-base sm:text-xl text-primary-200/80 max-w-2xl mx-auto font-light leading-relaxed">
-            {{ \App\Models\Setting::get('store_tagline', 'Temukan berbagai produk digital premium untuk mendukung bisnis dan produktivitas Anda.') }}
-        </p>
-    </div>
-</div>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <div class="flex flex-col lg:flex-row gap-10">
-        
-        <aside class="w-full lg:w-1/4 shrink-0">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-24 transition-all hover:shadow-md">
-                <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-5 flex items-center gap-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-primary-600">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-                    </svg>
-                    Filter Kategori
-                </h2>
+<!-- ======================================================= -->
+<!-- 1. ASYMMETRIC HERO SECTION (WARM MIDNIGHT OVERLAP)      -->
+<!-- ======================================================= -->
+<section class="relative pt-12 pb-20 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            
+            <!-- Kolom Kiri: Judul Masif & Intensi (7 Cols) -->
+            <div class="lg:col-span-7 space-y-6">
                 
-                <div class="space-y-1.5">
-                    <a href="{{ route('catalog.index') }}" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ !request('category') ? 'bg-primary-600 text-white shadow-md shadow-primary-600/10' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                        <span>Semua Kategori</span>
-                        @if(!request('category'))
-                            <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                        @endif
-                    </a>
-                    
-                    @foreach($categories as $cat)
-                        <a href="{{ route('catalog.index', ['category' => $cat->slug]) }}" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ request('category') === $cat->slug ? 'bg-primary-600 text-white shadow-md shadow-primary-600/10' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                            <span>{{ $cat->name }}</span>
-                            @if(request('category') === $cat->slug)
-                                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                            @endif
-                        </a>
-                    @endforeach
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-pill text-xs font-medium text-[#A39A92]">
+                    <span class="w-2 h-2 rounded-full bg-[#F97316]"></span>
+                    <span>Prodi Bisnis Digital • Fasilkom UPNVJT</span>
                 </div>
-            </div>
-        </aside>
 
-        <div class="flex-1">
-            <div class="mb-10">
-                <form action="{{ route('catalog.index') }}" method="GET" class="relative group">
-                    @if(request('category'))
-                        <input type="hidden" name="category" value="{{ request('category') }}">
-                    @endif
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari produk digital premium..." class="w-full pl-14 pr-24 py-4 bg-white border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 shadow-sm outline-none transition-all duration-300 text-gray-800 placeholder-gray-400 group-hover:border-gray-300">
-                    
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary-500 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                        </svg>
-                    </div>
+                <h1 class="font-heading text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[#F5EDE6] leading-[1.05]">
+                    Katalog karya digital yang siap pakai.
+                </h1>
 
-                    <button type="submit" class="absolute right-3 top-2.5 bottom-2.5 px-5 bg-gray-900 text-white text-xs font-semibold rounded-xl hover:bg-primary-600 active:scale-95 transition-all shadow-sm">
-                        Cari
-                    </button>
-                </form>
-            </div>
+                <p class="text-base sm:text-lg text-[#A39A92] max-w-xl font-light leading-relaxed">
+                    {{ \App\Models\Setting::get('store_tagline', 'Kumpulan modul belajar, aset visual, dan template siap pakai hasil proyek praktikum dan wirausaha mahasiswa.') }}
+                </p>
 
-            @if($products->isEmpty())
-                <div class="bg-white rounded-3xl border border-dashed border-gray-200 p-16 text-center max-w-xl mx-auto my-4 shadow-sm">
-                    <div class="w-20 h-20 bg-gray-50 border border-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" class="w-10 h-10 text-gray-400">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Produk Tidak Ditemukan</h3>
-                    <p class="text-sm text-gray-500 max-w-xs mx-auto leading-relaxed">Kami tidak dapat menemukan apa yang anda cari. Coba masukkan kata kunci lain atau bersihkan filter.</p>
-                    <a href="{{ route('catalog.index') }}" class="mt-6 inline-flex items-center justify-center px-5 py-2.5 bg-primary-50 text-primary-700 text-sm font-semibold rounded-xl hover:bg-primary-100 active:scale-98 transition-all">
-                        Reset Pencarian
+                <div class="pt-2 flex flex-wrap items-center gap-4">
+                    <a href="#katalog-produk" class="px-6 py-3.5 rounded-[12px] bg-[#F97316] hover:bg-[#EA580C] text-white text-xs font-bold uppercase tracking-wider transition-colors duration-150">
+                        Buka Katalog
+                    </a>
+                    <a href="{{ route('pages.contact') }}" class="px-6 py-3.5 rounded-[12px] bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-[#F5EDE6] text-xs font-semibold uppercase tracking-wider transition-colors duration-150">
+                        Konsultasi
                     </a>
                 </div>
-            @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
-                    @foreach($products as $product)
-                        <div class="transform hover:-translate-y-1 transition-all duration-300">
-                            <x-product-card :product="$product" />
+            </div>
+
+            <!-- Kolom Kanan: Featured Overlap Showcase (5 Cols) -->
+            <div class="lg:col-span-5 relative">
+                @if(isset($featuredProducts) && $featuredProducts->count() > 0)
+                    @php $lead = $featuredProducts->first(); @endphp
+                    
+                    <!-- Decorative Underlay Box (Sengaja overlap asimetris) -->
+                    <div class="absolute -top-4 -right-4 w-full h-full rounded-[24px] border border-white/[0.04] bg-[#17120F]/60 -z-10 translate-x-3 translate-y-3 hidden sm:block"></div>
+
+                    <!-- Main Highlight Card (Solid surface, rounded 20px) -->
+                    <div class="bg-[#17120F] rounded-[20px] border border-white/[0.08] p-6 shadow-2xl relative">
+                        <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/[0.06]">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-[#F97316]">Produk Pilihan</span>
+                            <span class="text-xs text-[#A39A92]">{{ $lead->category->name ?? 'Digital Asset' }}</span>
                         </div>
-                    @endforeach
-                </div>
-                
-                <div class="mt-14 border-t border-gray-100 pt-6">
-                    {{ $products->links() }}
-                </div>
-            @endif
+
+                        <!-- Gambar -->
+                        <div class="relative aspect-[16/10] rounded-[14px] overflow-hidden bg-[#201A16] mb-5 border border-white/[0.06]">
+                            <img src="{{ $lead->image_url }}" alt="{{ $lead->name }}" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 glass-pill px-2.5 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider">
+                                Rekomendasi
+                            </span>
+                        </div>
+
+                        <!-- Info -->
+                        <h2 class="font-heading text-xl font-bold text-[#F5EDE6] mb-2 leading-snug">
+                            <a href="{{ route('catalog.show', $lead->slug) }}" class="hover:text-[#F97316] transition-colors">
+                                {{ $lead->name }}
+                            </a>
+                        </h2>
+
+                        <p class="text-xs text-[#A39A92] line-clamp-2 leading-relaxed mb-5">
+                            {{ strip_tags($lead->description) }}
+                        </p>
+
+                        <!-- Price & CTA -->
+                        <div class="flex items-center justify-between pt-4 border-t border-white/[0.06]">
+                            <div class="tabular-nums">
+                                @if($lead->isOnSale())
+                                    <span class="text-xs text-[#A39A92] line-through mr-1">{{ $lead->formatted_price }}</span>
+                                    <span class="text-lg font-bold text-[#F97316]">{{ $lead->formatted_effective_price }}</span>
+                                @else
+                                    <span class="text-lg font-bold text-[#F5EDE6]">{{ $lead->formatted_price }}</span>
+                                @endif
+                            </div>
+
+                            <a href="{{ route('catalog.show', $lead->slug) }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#F5EDE6] hover:text-[#F97316] transition-colors">
+                                <span>Lihat detail</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                @endif
+            </div>
+
         </div>
     </div>
-</div>
+</section>
+
+<!-- ======================================================= -->
+<!-- 2. VALUE PROPOSITION: BENTO GRID (1 BESAR + 3 KECIL)    -->
+<!-- ======================================================= -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- Bento 1: Kotak Besar (Span 2 Kolom) -->
+        <div class="md:col-span-2 bg-[#17120F] rounded-[20px] border border-white/[0.07] p-8 flex flex-col justify-between relative overflow-hidden group">
+            <div class="max-w-md space-y-3 z-10">
+                <div class="w-10 h-10 rounded-[10px] bg-[#201A16] border border-white/10 flex items-center justify-center text-[#F97316]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                </div>
+                <h3 class="font-heading text-2xl font-bold text-[#F5EDE6]">Kurasi Asli Mahasiswa Bisnis Digital</h3>
+                <p class="text-xs text-[#A39A92] leading-relaxed">
+                    Setiap produk yang terdaftar diuji kelayakannya melalui tugas akhir, praktikum, dan inkubasi wirausaha di lingkungan Fasilkom UPN "Veteran" Jawa Timur.
+                </p>
+            </div>
+            <div class="pt-6 z-10">
+                <span class="text-[11px] font-semibold text-[#F97316] uppercase tracking-wider">Terverifikasi Akademik & Bisnis</span>
+            </div>
+        </div>
+
+        <!-- Bento 2: Kotak Kecil (1 Kolom) -->
+        <div class="bg-[#17120F] rounded-[20px] border border-white/[0.07] p-7 flex flex-col justify-between">
+            <div class="w-10 h-10 rounded-[10px] bg-[#201A16] border border-white/10 flex items-center justify-center text-[#F97316] mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+            </div>
+            <div>
+                <h4 class="font-heading text-lg font-bold text-[#F5EDE6] mb-1">Akses Instan</h4>
+                <p class="text-xs text-[#A39A92] leading-relaxed">
+                    Tautan berkas Google Drive / ZIP dikirim langsung setelah konfirmasi WhatsApp.
+                </p>
+            </div>
+        </div>
+
+        <!-- Bento 3: Kotak Kecil (1 Kolom) -->
+        <div class="bg-[#17120F] rounded-[20px] border border-white/[0.07] p-7 flex flex-col justify-between">
+            <div class="w-10 h-10 rounded-[10px] bg-[#201A16] border border-white/10 flex items-center justify-center text-[#F97316] mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="m9 12 2 2 4-4"></path>
+                </svg>
+            </div>
+            <div>
+                <h4 class="font-heading text-lg font-bold text-[#F5EDE6] mb-1">Lisensi Fleksibel</h4>
+                <p class="text-xs text-[#A39A92] leading-relaxed">
+                    Bebas dipakai untuk proyek pribadi, kuliah, hingga operasional bisnis nyata.
+                </p>
+            </div>
+        </div>
+
+        <!-- Bento 4: Kotak Kecil Lebar (Span 2 Kolom) -->
+        <div class="md:col-span-2 bg-[#17120F] rounded-[20px] border border-white/[0.07] p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-[10px] bg-[#201A16] border border-white/10 flex items-center justify-center text-[#F97316] shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="font-heading text-base font-bold text-[#F5EDE6]">Tanya Langsung Pembuatnya</h4>
+                    <p class="text-xs text-[#A39A92]">Ada kendala saat memakai template? Mahasiswa kami siap bantu pandu.</p>
+                </div>
+            </div>
+            <a href="{{ route('pages.contact') }}" class="text-xs font-bold text-[#F97316] hover:underline whitespace-nowrap">
+                Hubungi Kami &rarr;
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- 3. KATALOG & FILTER SECTION                             -->
+<!-- ======================================================= -->
+<section id="katalog-produk" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-24">
+    
+    <!-- Filter Bar Header -->
+    <div class="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center pb-8 mb-10 border-b border-white/[0.07]">
+        
+        <!-- Filter Chips: Pill shape, aktif = oranye solid, nonaktif = outline tipis -->
+        <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
+            <a href="{{ route('catalog.index') }}#katalog-produk" 
+               class="px-4 py-2 rounded-full text-xs font-bold tracking-wider uppercase whitespace-nowrap transition-colors duration-150 {{ !request('category') ? 'bg-[#F97316] text-white' : 'border border-white/10 text-[#A39A92] hover:text-[#F5EDE6] hover:border-white/20' }}">
+                Semua Kategori
+            </a>
+
+            @foreach($categories as $cat)
+                <a href="{{ route('catalog.index', ['category' => $cat->slug]) }}#katalog-produk" 
+                   class="px-4 py-2 rounded-full text-xs font-bold tracking-wider uppercase whitespace-nowrap transition-colors duration-150 {{ request('category') === $cat->slug ? 'bg-[#F97316] text-white' : 'border border-white/10 text-[#A39A92] hover:text-[#F5EDE6] hover:border-white/20' }}">
+                    {{ $cat->name }}
+                </a>
+            @endforeach
+        </div>
+
+        <!-- Search Bar Selective Glass (Tanpa glow, border oranye saat focus) -->
+        <div class="w-full md:w-72">
+            <form action="{{ route('catalog.index') }}#katalog-produk" method="GET" class="relative">
+                @if(request('category'))
+                    <input type="hidden" name="category" value="{{ request('category') }}">
+                @endif
+                <input type="text" name="search" value="{{ request('search') }}" 
+                       placeholder="Cari karya digital..." 
+                       class="w-full pl-9 pr-16 py-2.5 glass-surface rounded-[12px] text-xs text-[#F5EDE6] placeholder-[#A39A92] focus:outline-none focus:border-[#F97316] transition-colors duration-150">
+                
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#A39A92]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+
+                <button type="submit" class="absolute right-1.5 top-1.5 bottom-1.5 px-3 bg-[#201A16] hover:bg-[#F97316] text-[#F5EDE6] hover:text-white text-[11px] font-bold rounded-[8px] transition-colors duration-150">
+                    Cari
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Grid Produk (4 Kolom Responsif) -->
+    @if($products->isEmpty())
+        <div class="bg-[#17120F] rounded-[20px] border border-white/[0.07] p-16 text-center max-w-md mx-auto">
+            <h3 class="font-heading text-xl font-bold text-[#F5EDE6] mb-2">Produk Tidak Ditemukan</h3>
+            <p class="text-xs text-[#A39A92] leading-relaxed mb-6">
+                Tidak ada produk yang cocok dengan pencarian Anda saat ini.
+            </p>
+            <a href="{{ route('catalog.index') }}#katalog-produk" class="inline-block px-5 py-2.5 bg-[#F97316] hover:bg-[#EA580C] text-white text-xs font-bold rounded-[10px] transition-colors">
+                Bersihkan Filter
+            </a>
+        </div>
+    @else
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            @foreach($products as $product)
+                <x-product-card :product="$product" />
+            @endforeach
+        </div>
+        
+        <div class="mt-14 pt-8 border-t border-white/[0.06]">
+            {{ $products->links() }}
+        </div>
+    @endif
+
+</section>
+
 @endsection

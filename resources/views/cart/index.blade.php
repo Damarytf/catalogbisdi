@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen py-12" x-data="{ 
+<div class="py-12 sm:py-16 min-h-[75vh]" x-data="{ 
     waNumber: '{{ $whatsappNumber }}',
     greeting: '{{ $checkoutGreeting }}',
     closing: '{{ $checkoutClosing }}',
@@ -26,7 +26,7 @@
         
         message += `\nTotal Pesanan: ${$store.cart.formatPrice($store.cart.subtotal)}\n\n`;
         message += `Nama: ${this.buyerName}\n`;
-        message += `Alamat Pengiriman: ${this.buyerAddress}\n`;
+        message += `Alamat / Email: ${this.buyerAddress}\n`;
         if (this.buyerNotes) {
             message += `Catatan: ${this.buyerNotes}\n`;
         }
@@ -34,100 +34,100 @@
         
         const encodedMessage = encodeURIComponent(message);
         window.open(`https://wa.me/${this.waNumber}?text=${encodedMessage}`, '_blank');
-        
-        // Optional: clear cart after checkout
-        // $store.cart.items = [];
-        // $store.cart.save();
     }
 }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Keranjang Belanja</h1>
+        
+        <!-- Judul Halaman -->
+        <div class="mb-10 pb-6 border-b border-white/[0.06]">
+            <h1 class="font-heading text-3xl sm:text-4xl font-bold text-[#F5EDE6]">Keranjang Belanja</h1>
+            <p class="text-xs text-[#A39A92] mt-1">Konfirmasi pesanan produk digital Anda langsung dengan admin toko.</p>
+        </div>
 
-        <div class="flex flex-col lg:flex-row gap-8" x-cloak>
+        <div class="flex flex-col lg:flex-row gap-10" x-cloak>
             
-            <!-- Empty Cart State -->
-            <div x-show="$store.cart.items.length === 0" class="w-full bg-white rounded-2xl border border-gray-100 p-16 text-center shadow-sm">
-                <div class="w-24 h-24 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-6 text-primary-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                    </svg>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">Keranjang Anda kosong</h2>
-                <p class="text-gray-500 mb-8 max-w-md mx-auto">Sepertinya Anda belum menambahkan produk apapun ke dalam keranjang. Yuk mulai belanja!</p>
-                <a href="{{ route('catalog.index') }}" class="inline-flex items-center justify-center bg-primary-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-md">
-                    Lihat Katalog Produk
+            <!-- Keadaan Kosong -->
+            <div x-show="$store.cart.items.length === 0" class="w-full bg-[#17120F] rounded-[20px] border border-white/[0.07] p-16 text-center">
+                <h2 class="font-heading text-2xl font-bold text-[#F5EDE6] mb-2">Keranjang Masih Kosong</h2>
+                <p class="text-[#A39A92] text-xs mb-6 max-w-sm mx-auto leading-relaxed">
+                    Belum ada produk yang ditambahkan. Silakan telusuri katalog untuk mencari karya yang Anda inginkan.
+                </p>
+                <a href="{{ route('catalog.index') }}" class="inline-block px-6 py-3 rounded-[12px] bg-[#F97316] hover:bg-[#EA580C] text-white text-xs font-bold uppercase tracking-wider transition-colors duration-150">
+                    Kembali ke Katalog
                 </a>
             </div>
 
-            <!-- Cart Items -->
-            <div x-show="$store.cart.items.length > 0" class="w-full lg:w-2/3">
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                    <ul class="divide-y divide-gray-100">
-                        <template x-for="item in $store.cart.items" :key="item.id">
-                            <li class="p-6 flex flex-col sm:flex-row gap-6 items-center">
-                                <div class="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 border border-gray-100 overflow-hidden">
-                                    <img :src="item.image" :alt="item.name" class="w-full h-full object-cover">
-                                </div>
-                                <div class="flex-1 text-center sm:text-left w-full">
-                                    <h3 class="text-lg font-bold text-gray-900 mb-1" x-text="item.name"></h3>
-                                    <div class="text-primary-600 font-bold mb-4 sm:mb-0" x-text="$store.cart.formatPrice(item.effective_price)"></div>
-                                </div>
-                                <div class="flex items-center justify-between w-full sm:w-auto gap-6">
-                                    <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden h-10 w-28">
-                                        <button @click="$store.cart.updateQty(item.id, item.qty - 1)" class="px-3 bg-gray-50 hover:bg-gray-100 h-full text-gray-600 font-bold transition-colors">-</button>
-                                        <input type="number" x-model="item.qty" class="w-full text-center h-full border-0 focus:ring-0 text-sm font-medium p-0" readonly>
-                                        <button @click="$store.cart.updateQty(item.id, item.qty + 1)" class="px-3 bg-gray-50 hover:bg-gray-100 h-full text-gray-600 font-bold transition-colors">+</button>
-                                    </div>
-                                    <button @click="$store.cart.remove(item.id)" class="text-gray-400 hover:text-red-500 transition-colors p-2" title="Hapus">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </li>
-                        </template>
-                    </ul>
-                </div>
+            <!-- Daftar Item Keranjang (7 Cols) -->
+            <div x-show="$store.cart.items.length > 0" class="w-full lg:w-7/12 space-y-4">
+                <template x-for="item in $store.cart.items" :key="item.id">
+                    <div class="bg-[#17120F] rounded-[16px] p-5 border border-white/[0.07] flex items-center gap-4">
+                        <img :src="item.image_url" :alt="item.name" class="w-16 h-16 object-cover rounded-[10px] bg-[#201A16] border border-white/[0.06] shrink-0">
+                        
+                        <div class="flex-grow min-w-0">
+                            <h3 class="font-heading font-bold text-sm text-[#F5EDE6] truncate" x-text="item.name"></h3>
+                            <div class="text-xs text-[#F97316] font-semibold mt-0.5 tabular-nums" x-text="$store.cart.formatPrice(item.effective_price)"></div>
+                            
+                            <!-- Pengatur Jumlah -->
+                            <div class="flex items-center gap-2 mt-3">
+                                <button @click="$store.cart.updateQuantity(item.id, item.qty - 1)" class="w-6 h-6 rounded-[6px] bg-[#201A16] hover:bg-white/10 text-[#F5EDE6] flex items-center justify-center text-xs font-bold transition-colors">-</button>
+                                <span class="text-xs font-semibold text-[#F5EDE6] w-6 text-center tabular-nums" x-text="item.qty"></span>
+                                <button @click="$store.cart.updateQuantity(item.id, item.qty + 1)" class="w-6 h-6 rounded-[6px] bg-[#201A16] hover:bg-white/10 text-[#F5EDE6] flex items-center justify-center text-xs font-bold transition-colors">+</button>
+                            </div>
+                        </div>
+
+                        <div class="text-right shrink-0">
+                            <div class="font-bold text-sm text-[#F5EDE6] tabular-nums" x-text="$store.cart.formatPrice(item.effective_price * item.qty)"></div>
+                            <button @click="$store.cart.remove(item.id)" class="text-xs text-[#A39A92] hover:text-rose-400 mt-2 block ml-auto transition-colors">
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                </template>
             </div>
 
-            <!-- Order Summary -->
-            <div x-show="$store.cart.items.length > 0" class="w-full lg:w-1/3">
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-24">
-                    <h2 class="text-xl font-bold text-gray-900 mb-6">Ringkasan Pesanan</h2>
+            <!-- Form Pemesan (5 Cols) -> Panel Keranjang menggunakan Selective Glass -->
+            <div x-show="$store.cart.items.length > 0" class="w-full lg:w-5/12">
+                <div class="glass-surface rounded-[20px] p-7 sticky top-24 space-y-5">
+                    <h2 class="font-heading text-lg font-bold text-[#F5EDE6]">Detail Pemesan</h2>
                     
-                    <div class="space-y-4 mb-6 pb-6 border-b border-gray-100">
-                        <div class="flex justify-between text-gray-600">
-                            <span>Subtotal (<span x-text="$store.cart.totalItems"></span> item)</span>
-                            <span class="font-medium" x-text="$store.cart.formatPrice($store.cart.subtotal)"></span>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-[#F5EDE6] mb-1">Nama Lengkap *</label>
+                            <input type="text" x-model="buyerName" placeholder="Contoh: Budi Santoso" class="w-full px-3.5 py-2.5 bg-[#201A16] border border-white/10 rounded-[10px] text-xs text-[#F5EDE6] placeholder-[#A39A92] focus:outline-none focus:border-[#F97316] transition-colors">
                         </div>
-                        <div class="flex justify-between text-gray-900 text-xl font-black">
-                            <span>Total</span>
-                            <span x-text="$store.cart.formatPrice($store.cart.subtotal)"></span>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-[#F5EDE6] mb-1">Email / Kontak Aktif *</label>
+                            <textarea x-model="buyerAddress" rows="2" placeholder="Email aktif untuk pengiriman berkas digital" class="w-full px-3.5 py-2.5 bg-[#201A16] border border-white/10 rounded-[10px] text-xs text-[#F5EDE6] placeholder-[#A39A92] focus:outline-none focus:border-[#F97316] transition-colors"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-[#F5EDE6] mb-1">Catatan (Opsional)</label>
+                            <input type="text" x-model="buyerNotes" placeholder="Pesan untuk admin toko" class="w-full px-3.5 py-2.5 bg-[#201A16] border border-white/10 rounded-[10px] text-xs text-[#F5EDE6] placeholder-[#A39A92] focus:outline-none focus:border-[#F97316] transition-colors">
                         </div>
                     </div>
 
-                    <div class="space-y-4 mb-6">
-                        <h3 class="font-semibold text-gray-900">Data Pembeli</h3>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
-                            <input type="text" x-model="buyerName" class="w-full px-4 py-2.5 border-gray-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500" placeholder="Masukkan nama Anda" required>
+                    <!-- Rincian Harga Tabular -->
+                    <div class="pt-4 border-t border-white/10 space-y-2">
+                        <div class="flex justify-between text-xs text-[#A39A92]">
+                            <span>Subtotal</span>
+                            <span class="font-semibold text-[#F5EDE6] tabular-nums" x-text="$store.cart.formatPrice($store.cart.subtotal)"></span>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Pengiriman *</label>
-                            <textarea x-model="buyerAddress" rows="3" class="w-full px-4 py-2.5 border-gray-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500" placeholder="Alamat lengkap (beserta kode pos)" required></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Catatan Tambahan (Opsional)</label>
-                            <input type="text" x-model="buyerNotes" class="w-full px-4 py-2.5 border-gray-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500" placeholder="Pesan untuk penjual">
+                        <div class="flex justify-between items-baseline pt-2 border-t border-white/5">
+                            <span class="text-sm font-bold text-[#F5EDE6]">Total Bayar</span>
+                            <span class="text-xl font-bold text-[#F97316] tabular-nums" x-text="$store.cart.formatPrice($store.cart.subtotal)"></span>
                         </div>
                     </div>
 
-                    <button @click="checkout()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white py-4 rounded-xl font-bold text-lg transition-colors shadow-md shadow-green-500/20 flex justify-center items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                    <!-- Tombol WhatsApp -->
+                    <button @click="checkout()" class="w-full py-3.5 rounded-[12px] bg-[#F97316] hover:bg-[#EA580C] text-white font-bold text-xs uppercase tracking-wider transition-colors duration-150 flex items-center justify-center gap-2">
+                        <span>Pesan Langsung via WhatsApp</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
-                        Checkout via WhatsApp
                     </button>
+                    <p class="text-[10px] text-[#A39A92] text-center">Format pesan terisi otomatis ke WhatsApp admin toko.</p>
                 </div>
             </div>
 

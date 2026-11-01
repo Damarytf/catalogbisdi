@@ -30,8 +30,18 @@ class ProductController extends Controller
 
         $products = $query->orderBy('sort_order')->orderBy('id', 'desc')->paginate(12)->withQueryString();
         $categories = Category::active()->orderBy('sort_order')->get();
+        
+        $featuredProducts = Product::with('category')
+            ->active()
+            ->where('is_featured', true)
+            ->limit(5)
+            ->get();
+            
+        if ($featuredProducts->isEmpty()) {
+            $featuredProducts = Product::with('category')->active()->limit(4)->get();
+        }
 
-        return view('catalog.index', compact('products', 'categories'));
+        return view('catalog.index', compact('products', 'categories', 'featuredProducts'));
     }
 
     public function show($slug)

@@ -7,18 +7,58 @@
 @source "../**/*.vue";
 
 @theme {
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
-    --color-primary-50: #fff7ed;
-    --color-primary-100: #ffedd5;
-    --color-primary-200: #fed7aa;
-    --color-primary-300: #fdba74;
-    --color-primary-400: #fb923c;
-    --color-primary-500: #f97316;
-    --color-primary-600: #ea580c;
-    --color-primary-700: #c2410c;
-    --color-primary-800: #9a3412;
-    --color-primary-900: #7c2d12;
+    --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    --color-bg-warm: #0E0A08;
+    --color-surface-warm: #17120F;
+    --color-surface-elevated: #201A16;
+    --color-text-main: #F5EDE6;
+    --color-text-muted: #A39A92;
+    --color-border-warm: rgba(245, 237, 230, 0.08);
+
+    --color-bisdi: #F97316;
+    --color-bisdi-hover: #EA580C;
+    --color-bisdi-dim: rgba(249, 115, 22, 0.4);
+}
+
+body {
+    background-color: #0E0A08;
+    color: #F5EDE6;
+    font-family: var(--font-sans);
+}
+
+h1, h2, h3, .font-heading {
+    font-family: var(--font-heading);
+}
+
+/* Tabular numbers for price clarity */
+.tabular-nums {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Selektif Human-Crafted Glassmorphism */
+.glass-surface {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top-color: rgba(255, 255, 255, 0.18); /* Tepi atas lebih terang sebagai highlight cahaya fisik */
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 12px 32px -4px rgba(0, 0, 0, 0.5);
+}
+
+.glass-pill {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px) saturate(130%);
+    -webkit-backdrop-filter: blur(12px) saturate(130%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top-color: rgba(255, 255, 255, 0.22);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Grain overlay */
+.bg-grain {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
 [x-cloak] {
