@@ -42,6 +42,7 @@ class ProductForm
                             FileUpload::make('image')
                                 ->label('Gambar Utama')
                                 ->image()
+                                ->disk('public')
                                 ->directory('products')
                                 ->columnSpanFull(),
                             // Optional: \Filament\Forms\Components\FileUpload::make('gallery')->multiple()->directory('products/gallery')->label('Galeri (Opsional)')->columnSpanFull(),

@@ -9,23 +9,90 @@
 @theme {
     --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    
-    --color-bg-warm: #0E0A08;
-    --color-surface-warm: #17120F;
-    --color-surface-elevated: #201A16;
-    --color-text-main: #F5EDE6;
-    --color-text-muted: #A39A92;
-    --color-border-warm: rgba(245, 237, 230, 0.08);
 
     --color-bisdi: #F97316;
     --color-bisdi-hover: #EA580C;
     --color-bisdi-dim: rgba(249, 115, 22, 0.4);
 }
 
+/* ============================================================
+   CSS DESIGN TOKENS — Dark Mode Default (Warm Midnight)
+   ============================================================ */
+:root {
+    --c-bg:            #0E0A08;
+    --c-surface:       #17120F;
+    --c-elevated:      #201A16;
+    --c-text:          #F5EDE6;
+    --c-muted:         #A39A92;
+    --c-border:        rgba(245, 237, 230, 0.08);
+    --c-border-strong: rgba(245, 237, 230, 0.15);
+    --c-glow:          rgba(249, 115, 22, 0.12);
+    --c-grain-opacity: 0.04;
+    --c-invert-btn:    rgba(255, 255, 255, 0.04);
+    --c-invert-btn-h:  rgba(255, 255, 255, 0.08);
+    --c-divider:       rgba(255, 255, 255, 0.06);
+    --c-input-bg:      #201A16;
+    --c-glass-bg:      rgba(255, 255, 255, 0.05);
+    --c-glass-border:  rgba(255, 255, 255, 0.08);
+    --c-glass-border-t:rgba(255, 255, 255, 0.18);
+    --c-glass-shadow:  0 12px 32px -4px rgba(0,0,0,0.5);
+    --c-pill-bg:       rgba(255, 255, 255, 0.06);
+    --c-pill-border:   rgba(255, 255, 255, 0.12);
+    --c-pill-border-t: rgba(255, 255, 255, 0.22);
+    --c-card-shadow:   none;
+    --c-chip-bg:       #17120F;
+    --c-chip-border:   rgba(245, 237, 230, 0.07);
+    --c-qty-bg:        #201A16;
+    --c-stock-bg:      rgba(6, 78, 59, 0.6);
+    --c-stock-border:  rgba(16, 185, 129, 0.2);
+    --c-stock-text:    rgb(167, 243, 208);
+    --c-empty-bg:      rgba(255, 255, 255, 0.04);
+    --c-empty-border:  rgba(255, 255, 255, 0.10);
+}
+
+/* ============================================================
+   CSS DESIGN TOKENS — Light Mode (Warm Parchment)
+   ============================================================ */
+html.light {
+    --c-bg:            #FBF7F4;
+    --c-surface:       #FFFFFF;
+    --c-elevated:      #F3EDE9;
+    --c-text:          #1C110A;
+    --c-muted:         #7A6558;
+    --c-border:        rgba(139, 90, 43, 0.10);
+    --c-border-strong: rgba(139, 90, 43, 0.20);
+    --c-glow:          rgba(249, 115, 22, 0.06);
+    --c-grain-opacity: 0.025;
+    --c-invert-btn:    rgba(28, 17, 10, 0.05);
+    --c-invert-btn-h:  rgba(28, 17, 10, 0.10);
+    --c-divider:       rgba(139, 90, 43, 0.08);
+    --c-input-bg:      #F3EDE9;
+    --c-glass-bg:      rgba(251, 247, 244, 0.80);
+    --c-glass-border:  rgba(139, 90, 43, 0.10);
+    --c-glass-border-t:rgba(139, 90, 43, 0.20);
+    --c-glass-shadow:  0 12px 32px -4px rgba(139,90,43,0.10);
+    --c-pill-bg:       rgba(139, 90, 43, 0.06);
+    --c-pill-border:   rgba(139, 90, 43, 0.12);
+    --c-pill-border-t: rgba(139, 90, 43, 0.20);
+    --c-card-shadow:   0 2px 12px rgba(139, 90, 43, 0.08);
+    --c-chip-bg:       #F3EDE9;
+    --c-chip-border:   rgba(139, 90, 43, 0.10);
+    --c-qty-bg:        #F3EDE9;
+    --c-stock-bg:      rgba(6, 78, 59, 0.08);
+    --c-stock-border:  rgba(16, 185, 129, 0.25);
+    --c-stock-text:    rgb(6, 95, 70);
+    --c-empty-bg:      rgba(139, 90, 43, 0.05);
+    --c-empty-border:  rgba(139, 90, 43, 0.12);
+}
+
+/* ============================================================
+   BASE STYLES — pakai CSS vars
+   ============================================================ */
 body {
-    background-color: #0E0A08;
-    color: #F5EDE6;
+    background-color: var(--c-bg);
+    color: var(--c-text);
     font-family: var(--font-sans);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, .font-heading {
@@ -37,30 +104,146 @@ h1, h2, h3, .font-heading {
     font-variant-numeric: tabular-nums;
 }
 
-/* Selektif Human-Crafted Glassmorphism */
+/* ============================================================
+   SEMANTIC UTILITY CLASSES — keduanya mode otomatis
+   ============================================================ */
+
+/* Surfaces */
+.bg-page     { background-color: var(--c-bg); }
+.bg-surface  { background-color: var(--c-surface); }
+.bg-elevated { background-color: var(--c-elevated); }
+
+/* Text */
+.text-main  { color: var(--c-text); }
+.text-muted { color: var(--c-muted); }
+
+/* Borders */
+.border-warm        { border-color: var(--c-border); }
+.border-warm-strong { border-color: var(--c-border-strong); }
+.divide-warm > * + * { border-color: var(--c-divider); }
+
+/* Cards */
+.card {
+    background-color: var(--c-surface);
+    border: 1px solid var(--c-border);
+    box-shadow: var(--c-card-shadow);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Input fields */
+.input-field {
+    background-color: var(--c-input-bg);
+    border: 1px solid var(--c-border);
+    color: var(--c-text);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.input-field::placeholder { color: var(--c-muted); }
+.input-field:focus { outline: none; border-color: #F97316; }
+
+/* Subtle ghost button (e.g. "Buka Keranjang") */
+.btn-ghost {
+    background-color: var(--c-invert-btn);
+    border: 1px solid var(--c-border);
+    color: var(--c-text);
+}
+.btn-ghost:hover {
+    background-color: var(--c-invert-btn-h);
+}
+
+/* Category chip (inactive) */
+.chip-inactive {
+    background-color: var(--c-chip-bg);
+    border: 1px solid var(--c-chip-border);
+    color: var(--c-muted);
+}
+.chip-inactive:hover {
+    color: var(--c-text);
+    border-color: var(--c-border-strong);
+    background-color: var(--c-elevated);
+}
+
+/* Qty button */
+.btn-qty {
+    background-color: var(--c-qty-bg);
+    color: var(--c-text);
+}
+.btn-qty:hover { background-color: var(--c-border); }
+
+/* Divider */
+.divider { border-color: var(--c-divider); }
+
+/* ============================================================
+   GLASSMORPHISM — responsif ke mode
+   ============================================================ */
 .glass-surface {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--c-glass-bg);
     backdrop-filter: blur(18px) saturate(140%);
     -webkit-backdrop-filter: blur(18px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-top-color: rgba(255, 255, 255, 0.18); /* Tepi atas lebih terang sebagai highlight cahaya fisik */
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 12px 32px -4px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--c-glass-border);
+    border-top-color: var(--c-glass-border-t);
+    box-shadow: inset 0 1px 0 0 var(--c-glass-border), var(--c-glass-shadow);
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .glass-pill {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--c-pill-bg);
     backdrop-filter: blur(12px) saturate(130%);
     -webkit-backdrop-filter: blur(12px) saturate(130%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-top-color: rgba(255, 255, 255, 0.22);
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--c-pill-border);
+    border-top-color: var(--c-pill-border-t);
+    box-shadow: inset 0 1px 0 0 var(--c-pill-border);
 }
 
-/* Grain overlay */
+/* ============================================================
+   GRAIN OVERLAY — opacity dikontrol via CSS filter trick
+   ============================================================ */
 .bg-grain {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    transition: opacity 0.3s ease;
+}
+
+html.light .bg-grain {
+    opacity: 0.6; /* lebih tipis di light mode */
+}
+
+/* ============================================================
+   THEME TOGGLE BUTTON ANIMATION
+   ============================================================ */
+.theme-toggle-icon {
+    transition: transform 0.4s ease, opacity 0.3s ease;
+}
+.theme-toggle-icon.rotating {
+    transform: rotate(20deg);
+    opacity: 0;
 }
 
 [x-cloak] {
     display: none !important;
+}
+
+/* ============================================================
+   CATEGORY SLIDER — sleek thin scrollbar
+   ============================================================ */
+.category-slider {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(249, 115, 22, 0.25) transparent;
+    -ms-overflow-style: none;
+}
+.category-slider::-webkit-scrollbar { height: 3px; }
+.category-slider::-webkit-scrollbar-track { background: transparent; }
+.category-slider::-webkit-scrollbar-thumb {
+    background: rgba(249, 115, 22, 0.3);
+    border-radius: 10px;
+}
+.category-slider::-webkit-scrollbar-thumb:hover {
+    background: rgba(249, 115, 22, 0.5);
+}
+
+/* ============================================================
+   TRANSITION SMOOTHING — semua elemen utama
+   ============================================================ */
+*, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.25s;
+    transition-timing-function: ease;
 }

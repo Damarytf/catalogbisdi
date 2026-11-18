@@ -4,6 +4,36 @@ import Alpine from 'alpinejs';
 window.Alpine = Alpine;
 
 document.addEventListener('alpine:init', () => {
+
+    // ── Theme Store (Dark / Light toggle) ────────────────────────
+    Alpine.store('theme', {
+        dark: true,
+
+        init() {
+            // Baca preferensi user dari localStorage, fallback ke dark
+            const saved = localStorage.getItem('theme');
+            if (saved === 'light') {
+                this.dark = false;
+                document.documentElement.classList.add('light');
+            } else {
+                this.dark = true;
+                document.documentElement.classList.remove('light');
+            }
+        },
+
+        toggle() {
+            this.dark = !this.dark;
+            if (this.dark) {
+                document.documentElement.classList.remove('light');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.classList.add('light');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+    });
+
+    // ── Cart Store ────────────────────────────────────────────────
     Alpine.store('cart', {
         items: JSON.parse(localStorage.getItem('cart') || '[]'),
         
