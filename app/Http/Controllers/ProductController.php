@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -28,26 +29,39 @@ class ProductController extends Controller
             });
         }
 
-        $products = $query->orderBy('sort_order')->orderBy('id', 'desc')->paginate(12)->withQueryString();
+        $products   = $query->orderBy('sort_order')->orderBy('id', 'desc')->paginate(12)->withQueryString();
         $categories = Category::active()->orderBy('sort_order')->get();
-        
+
         $featuredProducts = Product::with('category')
             ->active()
             ->where('is_featured', true)
             ->limit(5)
             ->get();
-            
+
         if ($featuredProducts->isEmpty()) {
             $featuredProducts = Product::with('category')->active()->limit(4)->get();
         }
 
-        return view('catalog.index', compact('products', 'categories', 'featuredProducts'));
+        // Siapkan data carousel sebagai JSON untuk Alpine.js
+        $carouselItems = $featuredProducts->map(fn($p) => [
+            'name'        => $p->name,
+            'slug'        => $p->slug,
+            'image_url'   => $p->image_url,
+            'category'    => $p->category->name ?? 'Digital Asset',
+            'description' => Str::limit(strip_tags($p->description ?? ''), 90),
+            'price'       => $p->formatted_price,
+            'sale_price'  => $p->formatted_effective_price,
+            'on_sale'     => $p->isOnSale(),
+            'route'       => route('catalog.show', $p->slug),
+        ])->values();
+
+        return view('catalog.index', compact('products', 'categories', 'featuredProducts', 'carouselItems'));
     }
 
     public function show($slug)
     {
         $product = Product::with('category')->active()->where('slug', $slug)->firstOrFail();
-        
+
         $relatedProducts = Product::with('category')
             ->active()
             ->where('category_id', $product->category_id)

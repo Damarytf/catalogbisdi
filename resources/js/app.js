@@ -82,6 +82,11 @@ document.addEventListener('alpine:init', () => {
             this.items = this.items.filter(i => i.id !== id);
             this.save();
         },
+
+        clear() {
+            this.items = [];
+            this.save();
+        },
         
         save() {
             localStorage.setItem('cart', JSON.stringify(this.items));

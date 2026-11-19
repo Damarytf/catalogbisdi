@@ -31,13 +31,16 @@ class AdminPanelProvider extends PanelProvider
             
             // 1. UBAH WARNA DI SINI
             ->colors([
-                'primary' => Color::Indigo, // Mengubah dari Amber ke Indigo agar senada dengan halaman depan
-                'danger' => Color::Rose,
+                'primary' => Color::Orange,
+                'danger'  => Color::Rose,
+                'success' => Color::Emerald,
+                'warning' => Color::Amber,
+                'info'    => Color::Sky,
             ])
             
             // 2. TAMBAHKAN KUSTOMISASI TAMPILAN DI SINI
-            ->font('Inter') 
-            ->brandName('Toko Bisnis Digital')
+            ->font('Space Grotesk') 
+            ->brandName('Admin Katalog Bisdi')
             
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -45,10 +48,7 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
-            ])
+            ->widgets([])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

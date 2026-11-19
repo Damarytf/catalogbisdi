@@ -12,4 +12,5 @@ Route::get('/', function () {
 Route::get('/catalog', [ProductController::class, 'index'])->name('catalog.index');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('catalog.show');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::get('/contact', [PageController::class, 'contact'])->name('pages.contact');

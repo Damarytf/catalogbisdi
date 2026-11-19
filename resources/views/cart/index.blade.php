@@ -8,32 +8,98 @@
     buyerName: '',
     buyerAddress: '',
     buyerNotes: '',
+    isSubmitting: false,
     
-    checkout() {
-        if (!this.buyerName || !this.buyerAddress) {
+    async checkout() {
+        if (!this.buyerName.trim() || !this.buyerAddress.trim()) {
             window.dispatchEvent(new CustomEvent('notify', {
-                detail: { message: 'Nama dan Alamat Pengiriman wajib diisi!' }
+                detail: { message: 'Nama dan Email / Kontak wajib diisi!' }
             }));
             return;
         }
 
-        let message = `${this.greeting}\n\n`;
-        
-        $store.cart.items.forEach((item, index) => {
-            const subtotal = item.effective_price * item.qty;
-            message += `${index + 1}. ${item.name} - Qty: ${item.qty} - ${$store.cart.formatPrice(item.effective_price)} = ${$store.cart.formatPrice(subtotal)}\n`;
-        });
-        
-        message += `\nTotal Pesanan: ${$store.cart.formatPrice($store.cart.subtotal)}\n\n`;
-        message += `Nama: ${this.buyerName}\n`;
-        message += `Alamat / Email: ${this.buyerAddress}\n`;
-        if (this.buyerNotes) {
-            message += `Catatan: ${this.buyerNotes}\n`;
+        if ($store.cart.items.length === 0) {
+            window.dispatchEvent(new CustomEvent('notify', {
+                detail: { message: 'Keranjang belanja Anda masih kosong!' }
+            }));
+            return;
         }
-        message += `\n${this.closing}`;
-        
-        const encodedMessage = encodeURIComponent(message);
-        window.open(`https://wa.me/${this.waNumber}?text=${encodedMessage}`, '_blank');
+
+        this.isSubmitting = true;
+
+        try {
+            // 1. Simpan order ke database backend terlebih dahulu
+            const payload = {
+                customer_name: this.buyerName,
+                customer_contact: this.buyerAddress,
+                notes: this.buyerNotes,
+                items: $store.cart.items.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.effective_price,
+                    qty: item.qty
+                }))
+            };
+
+            const response = await fetch('{{ route('cart.checkout') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || 'Gagal menyimpan pesanan');
+            }
+
+            const invoiceNumber = result.order_number;
+
+            // 2. Format Prompt WhatsApp lengkap dengan Invoice & Item-item
+            let message = `🛒 *PESANAN BARU #${invoiceNumber}*\n`;
+            message += `--------------------------------------\n`;
+            message += `${this.greeting}\n\n`;
+            message += `*Daftar Produk:*\n`;
+            
+            $store.cart.items.forEach((item, index) => {
+                const subtotal = item.effective_price * item.qty;
+                message += `${index + 1}. *${item.name}*\n`;
+                message += `   Qty: ${item.qty} × ${$store.cart.formatPrice(item.effective_price)} = ${$store.cart.formatPrice(subtotal)}\n`;
+            });
+            
+            message += `\n*Total Tagihan:* ${$store.cart.formatPrice($store.cart.subtotal)}\n`;
+            message += `--------------------------------------\n`;
+            message += `*Data Pemesan:*\n`;
+            message += `• Nama: ${this.buyerName}\n`;
+            message += `• Email/Kontak: ${this.buyerAddress}\n`;
+            if (this.buyerNotes) {
+                message += `• Catatan: ${this.buyerNotes}\n`;
+            }
+            message += `--------------------------------------\n`;
+            message += `${this.closing}`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${this.waNumber}?text=${encodedMessage}`, '_blank');
+
+            // 3. Notifikasi & kosongkan cart
+            window.dispatchEvent(new CustomEvent('notify', {
+                detail: { message: `Pesanan #${invoiceNumber} berhasil dicatat & dialihkan ke WhatsApp!` }
+            }));
+
+            $store.cart.clear();
+
+        } catch (error) {
+            console.error(error);
+            window.dispatchEvent(new CustomEvent('notify', {
+                detail: { message: error.message || 'Terjadi kesalahan saat memproses pesanan. Silakan coba lagi.' }
+            }));
+        } finally {
+            this.isSubmitting = false;
+        }
     }
 }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -133,14 +199,28 @@
 
                     <!-- WhatsApp CTA -->
                     <button @click="checkout()"
-                            class="w-full py-3.5 rounded-[12px] bg-[#F97316] hover:bg-[#EA580C] text-white font-bold text-xs uppercase tracking-wider transition-colors duration-150 flex items-center justify-center gap-2">
-                        <span>Pesan Langsung via WhatsApp</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
+                            :disabled="isSubmitting"
+                            class="w-full py-3.5 rounded-[12px] bg-[#F97316] hover:bg-[#EA580C] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-xs uppercase tracking-wider transition-colors duration-150 flex items-center justify-center gap-2">
+                        <template x-if="!isSubmitting">
+                            <span class="flex items-center gap-2">
+                                <span>Pesan Langsung via WhatsApp</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </span>
+                        </template>
+                        <template x-if="isSubmitting">
+                            <span class="flex items-center gap-2">
+                                <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span>Mencatat Pesanan...</span>
+                            </span>
+                        </template>
                     </button>
-                    <p class="text-[10px] text-muted text-center">Format pesan terisi otomatis ke WhatsApp admin toko.</p>
+                    <p class="text-[10px] text-muted text-center">Nomor invoice otomatis dibuat dan pesan terisi langsung ke WhatsApp admin.</p>
                 </div>
             </div>
 
