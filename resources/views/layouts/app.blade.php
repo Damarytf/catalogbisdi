@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? 'Katalog Produk' }} — {{ \App\Models\Setting::get('store_name', 'Katalog Bisdi') }}</title>
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/logobisdi.jpeg') }}?v=2">
     
     <!-- Typography: Space Grotesk (Headings) & DM Sans (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,10 +40,10 @@
                 
                 <!-- Logo & Brand -->
                 <a href="{{ route('catalog.index') }}" class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-[8px] flex items-center justify-center font-bold text-xs tracking-wider text-main"
-                         style="background-color: var(--c-elevated); border: 1px solid var(--c-border);">
-                        BD
-                    </div>
+                    <img src="{{ asset('images/logobisdi.jpeg') }}"
+                         alt="{{ \App\Models\Setting::get('store_name', 'Katalog Bisnis') }}"
+                         class="w-9 h-9 rounded-[8px] object-cover shrink-0"
+                         style="border: 1px solid var(--c-border);">
                     <div>
                         <span class="font-heading font-bold text-base sm:text-lg tracking-tight block text-main">
                             {{ \App\Models\Setting::get('store_name', 'Katalog Bisdi') }}
