@@ -55,6 +55,11 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function clicks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ProductClick::class);
+    }
+
     // Scopes
     public function scopeActive($query)
     {

@@ -63,17 +63,11 @@
                 @endif
             </div>
             
-            @if($product->isAvailable())
-                <button 
-                    @click.prevent="$store.cart.add({{ json_encode(['id' => $product->id, 'name' => $product->name, 'price' => (float)$product->price, 'sale_price' => (float)$product->sale_price, 'image_url' => $product->image_url]) }})"
-                    class="w-9 h-9 rounded-[10px] flex items-center justify-center transition-colors duration-150 hover:bg-[#F97316] hover:text-white btn-ghost"
-                    title="Tambah ke Keranjang">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                </button>
-            @endif
+            <a href="{{ route('catalog.show', $product->slug) }}"
+               class="px-3 py-1.5 rounded-[8px] text-xs font-semibold text-[#F97316] transition-colors duration-150 hover:bg-[#F97316] hover:text-white btn-ghost"
+               title="Lihat Detail">
+                Detail →
+            </a>
         </div>
     </div>
 </div>

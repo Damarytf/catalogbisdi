@@ -58,9 +58,21 @@ class ProductController extends Controller
         return view('catalog.index', compact('products', 'categories', 'featuredProducts', 'carouselItems'));
     }
 
-    public function show($slug)
+    public function show($slug, Request $request)
     {
         $product = Product::with('category')->active()->where('slug', $slug)->firstOrFail();
+
+        // Rekam click counter
+        try {
+            \App\Models\ProductClick::create([
+                'product_id' => $product->id,
+                'ip_address' => $request->ip(),
+                'user_agent' => substr((string) $request->userAgent(), 0, 500),
+            ]);
+        } catch (\Throwable $e) {
+            // Lewati jika terjadi kendala agar user tetap bisa melihat produk
+            report($e);
+        }
 
         $relatedProducts = Product::with('category')
             ->active()

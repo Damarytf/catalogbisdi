@@ -23,24 +23,19 @@ class StatsOverviewWidget extends BaseStatsOverviewWidget
             ? round(($completedCount / $totalOrders) * 100, 1)
             : 0;
 
+        $monthlyClicks = \App\Models\ProductClick::whereBetween('created_at', [
+            \Illuminate\Support\Carbon::now()->startOfMonth(),
+            \Illuminate\Support\Carbon::now()->endOfMonth()
+        ])->count();
+
         return [
-            Stat::make('Total Omzet Terverifikasi', 'Rp ' . number_format($completedTotal, 0, ',', '.'))
-                ->description("Dari {$completedCount} pesanan selesai")
-                ->descriptionIcon('heroicon-m-banknotes')
-                ->color('success'),
-
-            Stat::make('Potensi Omzet (Follow-up WA)', 'Rp ' . number_format($pendingTotal, 0, ',', '.'))
-                ->description("{$pendingCount} pesanan baru menunggu verifikasi")
-                ->descriptionIcon('heroicon-m-chat-bubble-bottom-center-text')
-                ->color($pendingCount > 0 ? 'warning' : 'gray'),
-
-            Stat::make('Konversi Penjualan WA', "{$conversionRate}%")
-                ->description("Rasio checkout berhasil dibayar")
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->color($conversionRate >= 50 ? 'success' : 'info'),
+            Stat::make('Kunjungan Produk (Bulan Ini)', number_format($monthlyClicks, 0, ',', '.'))
+                ->description('Total klik produk dibuka user')
+                ->descriptionIcon('heroicon-m-cursor-arrow-rays')
+                ->color('warning'),
 
             Stat::make('Total Katalog Aktif', Product::active()->count())
-                ->description('Produk digital siap pesan')
+                ->description('Produk digital siap tayang')
                 ->descriptionIcon('heroicon-m-cube')
                 ->color('gray'),
         ];
